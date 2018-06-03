@@ -1,20 +1,10 @@
-
-	
-	<?
-		$search = $_POST['search'];
-	
-	
-
-	
-	?>
-
 <!doctype html>
 <?php
-
+$search = $_POST['search'];
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -32,11 +22,25 @@ if (mysqli_connect_error()){
 
 	$data3 = mysqli_fetch_array($qry);
 	//echo $data3['nameProduct'];
+
+
+$sql4 = "SELECT  * FROM NowUser";
+	$qry4 = mysqli_query($conn,$sql4);
+	$data4 = mysqli_fetch_array($qry4);
+	
+	$user = $data4['UserName'];
+
+	$sql2 = "SELECT  * FROM Member WHERE username = '".$user."'";
+	$qry2 = mysqli_query($conn,$sql2);
+	$id2 = 0;
+	
+	$data2 = mysqli_fetch_array($qry2);
+	$point = $data2['point'];
 ?>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>eCommerce template By Adobe Dreamweaver CC</title>
+<title>SearchC</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="eCommerceAssets/styles/eCommerceStyle.css" rel="stylesheet" type="text/css">
 <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
@@ -49,7 +53,13 @@ if (mysqli_connect_error()){
     <!-- This is the header content. It contains Logo and links -->
     <a href = "shopping.php"><div id="logo"> <!-- <img src="logoImage.png" alt="sample logo"> --> 
       <!-- Company Logo text --> HelloWorld</div></a>
-    <div id="headerLinks"><a href="index.php" title="Login/Register">Log Out</a><a href="favorite.php" title="Favorites">Favorites</a><a href="#" title="Cart">Cart</a></div>
+      <div id="headerLinks">
+		<a href="index.php" title="Login/Register">Log Out</a>
+		<a href="history.php" title="History">History</a>
+		<a href="favorite.php" title="Favorites">Favorites</a>
+		<a href="cart.php" title="Cart">Cart</a>
+	  <font size="2"><?php  echo "&nbsp&nbsp&nbsp&nbsp&nbsp".$user.",  &nbsp Point : ".$point ?></font>
+	</div>
   </header>
  
   <section id="offer"> 
@@ -69,11 +79,11 @@ if (mysqli_connect_error()){
 		</form>
       <div id="menubar">
         <nav class="menu">
-          <h2><!-- Title for menuset 1 --> Category</h2>
+          <h2><!-- Title for menuset 1 --> Brand</h2>
           <hr>
           <ul>
-            <?
-			  $sql6 = "SELECT * FROM Category;";
+            <?php
+			  $sql6 = "SELECT * FROM Brand;";
 	
 		$qry6 = mysqli_query($conn,$sql6);
 	  	//$data2 = mysqli_fetch_array($qry);
@@ -81,31 +91,32 @@ if (mysqli_connect_error()){
 		while($data6 = mysqli_fetch_array($qry6)){
 			  ?>
             <!-- List of links under menuset 1 -->
-            <li><a href="#" title="Link"><? echo $data6['name_Category'] ?></a></li>
+			 
+            <li><a href="category.php?nameC=<?php echo $data6['id_Brand']; ?>" title="Link"><?php echo $data6['name_Brand'] ?></a></li>
             
-			  <? } ?>
+			  <?php } ?>
           </ul>
         </nav>
        
       </div>
     </section>
    
-	  <? if(empty($data3)){ ?>
+	  <?php if(empty($data3)){ ?>
 	  <br>
 	  		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <font face="'Montserrat', sans-serif" color= #919191 size = 8 ><? echo $search ?></font> <br>
 	  		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <font face="'Montserrat', sans-serif" color= #919191 size = 4 >No results found.</font> <br>
 	  		&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <a href="shopping.php"><font face="'Montserrat', sans-serif" color= #919191 size = 2 >go home</font> </a>
-	<?	}else{
+	<?php	}else{
 	  ?>
 	  
 	  <section class="mainContent">
 	    <div class="productRow">
 		   
-          <p><img src="eCommerceAssets/images/<? echo $data3['img_product'] ?>" width="400" height="396" alt=""/> 
+          <p><img src="eCommerceAssets/images/<?php echo $data3['img_product'] ?>" width="400" height="396" alt=""/> 
             <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 10 ><? echo $data3['nameProduct']?></font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >ID : <? echo $data3['id_Product']?></font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Category : <? echo $data3['type'];
+            <font face="'Montserrat', sans-serif" color= #919191 size = 10 ><?php echo $data3['nameProduct']?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >ID : <?php echo $data3['id_Product']?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Category : <?php echo $data3['type'];
 				
 				$type = $data3['type'];
 				  	$sql4 = "SELECT * FROM Category where id_Category = '$type';";
@@ -117,11 +128,11 @@ if (mysqli_connect_error()){
 				
 				
 				?></font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Count : <? echo $data3['countProduct'];?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Count : <?php echo $data3['countProduct'];?></font> <br>
             <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Description : </font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 ><? echo $data3['description']?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 ><?php echo $data3['description']?></font> <br>
             <br>
-          <font face="'Montserrat', sans-serif" color= #919191 size = 4 >Price : <? echo $data3['price']?></font> </p>
+          <font face="'Montserrat', sans-serif" color= #919191 size = 4 >Price : <?php echo $data3['price']?></font> </p>
           <p>&nbsp;</p>
           <p><br>
             
@@ -141,7 +152,7 @@ if (mysqli_connect_error()){
 	
 	
     </section>
-	<? } ?>
+	<?php } ?>
 	
   </div>
   <footer> 

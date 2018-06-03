@@ -6,7 +6,7 @@
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -89,12 +89,12 @@ if (mysqli_connect_error()){
 
 <!-- Select Basic -->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="product_categorie">CATEGORY</label>
+  <label class="col-md-4 control-label" for="product_categorie">BRAND</label>
   <div class="col-md-4">
     <select id="product_categorie" name="product_categorie" class="form-control">
 		
-		<?
-			  $sql1 = "SELECT * FROM Category;";
+		<?php
+			  $sql1 = "SELECT * FROM Brand;";
 	
 		$qry1 = mysqli_query($conn,$sql1);
 	  	//$data2 = mysqli_fetch_array($qry);
@@ -102,9 +102,9 @@ if (mysqli_connect_error()){
 		while($data1 = mysqli_fetch_array($qry1)){
 			  ?>
             <!-- List of links under menuset 1 -->
-            <li><a href="category.php?nameC=<? echo $data1['id_Category']; ?> "><? echo $data1['name_Category'] ?></a></li>
-            <option name = "category" value="<? echo $data1['id_Category']; ?>"><? echo $data1['name_Category'] ?></option>
-			  <? } ?>
+            <li><a href="category.php?nameC=<?php echo $data1['id_Brand']; ?> "><?php echo $data1['name_Brand'] ?></a></li>
+            <option name = "category" value="<?php echo $data1['id_Brand']; ?>"><?php echo $data1['name_Brand'] ?></option>
+			  <?php } ?>
 		
     
     </select>
@@ -165,22 +165,22 @@ if (mysqli_connect_error()){
 <fieldset>
 
 <!-- Form Name -->
-<legend>CATEGORY</legend>
+<legend>BRAND</legend>
 
 <!-- Text input-->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="category_id">CATEGORY ID</label>  
+  <label class="col-md-4 control-label" for="category_id">BRAND ID</label>  
   <div class="col-md-4">
-  <input id="product_id" name="category_id" placeholder="CATEGORY ID" class="form-control input-md" required="" type="text">
+  <input id="product_id" name="category_id" placeholder="BRAND ID" class="form-control input-md" required="" type="text">
     
   </div>
 </div>
 
 <!-- Text input-->
 <div class="form-group">
-  <label class="col-md-4 control-label" for="category">CATEGORY NAME</label>  
+  <label class="col-md-4 control-label" for="category">BRAND NAME</label>  
   <div class="col-md-4">
-  <input id="product_name" name="category_name" placeholder="CATEGORY NAME" class="form-control input-md" required="" type="text">
+  <input id="product_name" name="category_name" placeholder="BRAND NAME" class="form-control input-md" required="" type="text">
     
   </div>
 </div>
@@ -196,6 +196,12 @@ if (mysqli_connect_error()){
 
 </fieldset>
 </form>  
+		  <br><br><br><br>
+
+<fieldset>
+
+<!-- Form Name -->
+
 		  
 		  
 		  

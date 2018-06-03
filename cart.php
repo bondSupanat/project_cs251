@@ -6,7 +6,7 @@
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -17,13 +17,24 @@ if (mysqli_connect_error()){
     . mysqli_connect_error());
 }
 
+	$sql4 = "SELECT  * FROM NowUser";
+	$qry4 = mysqli_query($conn,$sql4);
+	$data4 = mysqli_fetch_array($qry4);
+	
+	$user = $data4['UserName'];
 
+	$sql2 = "SELECT  * FROM Member WHERE username = '".$user."'";
+	$qry2 = mysqli_query($conn,$sql2);
+	$id2 = 0;
+	
+	$data2 = mysqli_fetch_array($qry2);
+	$point = $data2['point'];
 
 ?>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>eCommerce template By Adobe Dreamweaver CC</title>
+<title>Cart</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="eCommerceAssets/styles/eCommerceStyle.css" rel="stylesheet" type="text/css">
 <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
@@ -36,7 +47,13 @@ if (mysqli_connect_error()){
     <!-- This is the header content. It contains Logo and links -->
    <a href = "shopping.php"><div id="logo"> <!-- <img src="logoImage.png" alt="sample logo"> --> 
       <!-- Company Logo text --> HelloWorld</div></a>
-    <div id="headerLinks"><a href="index.php" title="Login/Register">Log Out</a><a href="favorite.php" title="Favorites">Favorites</a><a href="cart.php" title="Cart">Cart</a></div>
+       <div id="headerLinks">
+		<a href="index.php" title="Login/Register">Log Out</a>
+		<a href="history.php" title="History">History</a>
+		<a href="favorite.php" title="Favorites">Favorites</a>
+		<a href="cart.php" title="Cart">Cart</a>
+	  <font size="2"><?php  echo "&nbsp&nbsp&nbsp&nbsp&nbsp".$user.",  &nbsp Point : ".$point ?></font>
+	</div>
   </header>
  
   <section id="offer"> 
@@ -60,11 +77,11 @@ if (mysqli_connect_error()){
 		
       <div id="menubar">
         <nav class="menu">
-          <h2><!-- Title for menuset 1 --> Category</h2>
+          <h2><!-- Title for menuset 1 --> Brand</h2>
           <hr>
           <ul>
-			  <?
-			  $sql3 = "SELECT * FROM Category;";
+			  <?php
+			  $sql3 = "SELECT * FROM Brand;";
 	
 		$qry2 = mysqli_query($conn,$sql3);
 	  	//$data2 = mysqli_fetch_array($qry);
@@ -72,9 +89,9 @@ if (mysqli_connect_error()){
 		while($data3 = mysqli_fetch_array($qry2)){
 			  ?>
             <!-- List of links under menuset 1 -->
-            <li><a href="category.php?nameC=<?  echo $data3['id_Category']; ?>" title="Link"><? echo $data3['name_Category'] ?></a></li>
+            <li><a href="category.php?nameC=<?php  echo $data3['id_Brand']; ?>" title="Link"><?php echo $data3['name_Brand'] ?></a></li>
             
-			  <? } ?>
+			  <?php } ?>
           </ul>
         </nav>
        
@@ -87,7 +104,7 @@ if (mysqli_connect_error()){
 	<?php
 
 
-		?>   <h1>Cart</h1>  <?
+		?>   <h1>Cart</h1>  <?php
 		if(empty($_GET['id'])){
 			//echo "eiei";
 		}else{
@@ -95,7 +112,7 @@ if (mysqli_connect_error()){
 				$sql7 = "INSERT INTO Shopping_Cart (ID_product)
   				values ( '$id2' )";
 				$conn->query($sql7);
-				?>    <h3> Add to Cart !</h3>  <?
+				?>    <h3> Add to Cart !</h3>  <?php
 			
 	}
 	
@@ -106,17 +123,18 @@ if (mysqli_connect_error()){
 <tr>
 
 <th width="91"> <div align="center">ProductID </div></th>
+	<th width="91"> <div align="center">Image </div></th>
 <th width="198"> <div align="center">Name </div></th>
 <th width="97"> <div align="center">Price </div></th>
 <th width="30"> <div align="center">Delete </div></th>
 </tr>
 
-	<?
+	<?php
 	
 
 	$sql2 = "SELECT  * FROM Shopping_Cart";
 	$qry2 = mysqli_query($conn,$sql2);
-	$count = 0;
+		$count = 0;
 	
 	while($data2 = mysqli_fetch_array($qry2)){
 		$id = $data2['ID_product'];
@@ -128,30 +146,48 @@ if (mysqli_connect_error()){
 		$data3 = mysqli_fetch_array($qry);
 		
 		?> <tr> 
-		<td><div align="center"><? echo $data3['id_Product'] ; ?> </div></td> 
-		<td><? echo $data3['nameProduct'] ; ?> </td> 
-		<td><div align="center"><? echo $data3['price']; ?> </div></td> 
+		<td><div align="center"><?php echo $data3['id_Product'] ; ?> </div></td> 
+		<td><img src="eCommerceAssets/images/<?php echo $data3['img_product'] ; ?> " width="100" height="101" alt=""/>	</td>
+		<td><?php echo $data3['nameProduct'] ; ?> </td> 
+		<td><div align="center"><?php echo $data3['price']; ?> </div></td> 
 		<td align="center"><a href="delete_cart.php?CusID=<?php echo $data2['num'] ;?>">Delete</a></td>
 		</tr>
 		
-		<?
-		
+		<?php
 		$count += $data3['price'] ;
 		
 	}
 	
 	
 	//$id = "1001";
-	?> </table> <br><br> <? 
+	?> </table> <br><br> <?php 
 		echo "total Price : ";
 		echo $count;
 		echo " baht";
-	?> <br> <? 
-		echo "total Price + VAT 7 % : ";
-		echo $count*1.07;
-		echo " baht";
+	?> <br> 
+		
+		<?php 
+			echo "total Price + VAT 7 % : ";
+			echo $count*1.07;
+			echo " baht";
 		?> <br> 
-			<br>
+			
+		
+		
+		
+		
+	
+		
+			  <br>
+		 <button >
+					<a href="payCard.php?total=<?php echo $count ?>"><font face="'Montserrat', sans-serif" color= #919191 size = 3 > Credit Card payment</font></a>
+			</button>
+		<button >
+					<a href="payBnak.php?total=<?php echo $count ?>"><font face="'Montserrat', sans-serif" color= #919191 size = 3 > bank transfer payment  </font></a>
+			</button>
+	<br>
+		
+		
 		<a href="shopping.php">go home</a> 		
 	
 		</font>

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Untitled Document</title>
 </head>
-<?
+<?php
 	
 	$product_id = $_POST['product_id'];
 	$product_name = $_POST['product_name'];
@@ -19,7 +19,7 @@
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
 	
@@ -31,7 +31,7 @@ $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
 		    if ($conn->query($sql)){
 	  			//echo "window.open(\"login.html\",\"_self\");";
 	  			echo "Add Product";
-				?><br><a href=javascript:history.back(1)>go back</a> <?
+				?><br><a href=javascript:history.back(1)>go back</a> <?php
 			}else{
     			echo "Error: ". $sql ."
 				". $conn->error;

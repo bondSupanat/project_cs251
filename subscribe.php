@@ -13,7 +13,7 @@
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -31,10 +31,10 @@ if($conn->error)
 		
 		  	$conn->query($sql7);
 	
-	echo "thank you !!";  ?> <br> <?
+	echo "thank you !!";  ?> <br> <?php
 	echo "Subscribe and be the first to get great deals!"; ?> <br> 
 		<a href=javascript:history.back(1)>go back</a> 
-	<?
+	<?php
 
 
 ?>

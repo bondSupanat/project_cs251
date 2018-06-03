@@ -1,10 +1,10 @@
-<!doctype html>
+  <!doctype html>
 <?php
 
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -21,7 +21,7 @@ if (mysqli_connect_error()){
 <html>
 <head>
 <meta charset="UTF-8">
-<title>eCommerce template By Adobe Dreamweaver CC</title>
+<title>Shopping EiEi</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="eCommerceAssets/styles/eCommerceStyle.css" rel="stylesheet" type="text/css">
 <!--The following script tag downloads a font from the Adobe Edge Web Fonts server for use within the web page. We recommend that you do not modify it.-->
@@ -31,10 +31,12 @@ if (mysqli_connect_error()){
 <body>
 <div id="mainWrapper">
   <header> 
-    <!-- This is the header content. It contains Logo and links -->
-   <a href = "shopping.php"><div id="logo"> <!-- <img src="logoImage.png" alt="sample logo"> --> 
-      <!-- Company Logo text --> HelloWorld</div></a>
-    <div id="headerLinks"><a href="sign_in.html" title="Login/Register">Login/Register</a><a href="#" title="Favorites">Favorites</a><a href="#" title="Cart">Cart</a></div>
+   <a href = "index.php"><div id="logo"> 
+      HelloWorld</div></a>
+    <div id="headerLinks">
+		<a href="sign_in.html" title="Login/Register">Login/Register</a>
+		<a href="#" title="Favorites">Favorites</a>
+		<a href="#" title="Cart">Cart</a></div>
   </header>
  
   <section id="offer"> 
@@ -45,105 +47,156 @@ if (mysqli_connect_error()){
   <div id="content">
     <section class="sidebar"> 
       <!-- This adds a sidebar with 1 searchbox,2 menusets, each with 4 links -->
-	<form method="post" action="search.php">
-      <input type="text"  id="search" name="search" placeholder="Search Name Product">
+		<?php 
+			$classS = new Search;
+			$classS->showSearch();
 		
-			<button >
-					<font face="'Montserrat', sans-serif" color= #919191 size = 3 > Search </font>
-			</button>
-			
-		</form>
-		
-			
+		?>
 		
       <div id="menubar">
         <nav class="menu">
-          <h2><!-- Title for menuset 1 --> Category</h2>
+          <h2> Brand</h2>
           <hr>
           <ul>
-			  <?
-			  $sql3 = "SELECT * FROM Category;";
-	
-		$qry2 = mysqli_query($conn,$sql3);
-	  	//$data2 = mysqli_fetch_array($qry);
-		
-		while($data3 = mysqli_fetch_array($qry2)){
+			  <?php
+			  	$classC = new Category;
+			  	$classC->showCategory($conn);
 			  ?>
-            <!-- List of links under menuset 1 -->
-            <li><a href="sign_in.html" title="Link"><? echo $data3['name_Category'] ?></a></li>
-            
-			  <? } ?>
           </ul>
         </nav>
        
       </div>
     </section>
     <section class="mainContent">
-		<?   
-		$sql2 = "SELECT * FROM Product;";
-	
-		$qry = mysqli_query($conn,$sql2);
-	  	//$data2 = mysqli_fetch_array($qry);
+		<?php  
+			$sql2 = "SELECT * FROM Product;";
+			$qry = mysqli_query($conn,$sql2);
 		
-		while($data2 = mysqli_fetch_array($qry)){
-	 // $user = $data2['username'] ;
-	
-		//$result1 = $class->checkUser($data2['username'] ,$username);
-		//$result2 = $class->checkEmail($data2['email'] ,$email);
+			$class = new Product;
 		
-			//echo "<script type = 'text/javascript'>window.open(\"sign_up.html\",\"_self\")</script>";
-		
-		//echo $email2;
-	
+		while($data2 = mysqli_fetch_array($qry)){	
 		?>
-      <div class="productRow"><!-- Each product row contains info of 3 elements -->
-        <article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/<?echo $data2['img_product'];?>"></div>
-          <p class="price"><? echo $data2['price'];?> Baht</p>
-          <p class="productContent"><? echo $data2['nameProduct'];?> </p>
-          <a href="sign_in.html"><input type="button" name="button" value="Buy" class="buyButton"></a>
-        </article>
-		  
-        <article class="productInfo"><!-- Each individual product description -->
-			<?
+      	<div class="productRow">
+        
+			<?php
+				$class->set($data2);
+				$class->showProduct();
+			
 				$data2 = mysqli_fetch_array($qry); 
+				$class->set($data2);
 				if(empty($data2)) break;
-			?>
-          <div><img alt="sample" src="eCommerceAssets/images/<?echo $data2['img_product'];?>"></div>
-          <p class="price"><? echo $data2['price'];?> Baht</p>
-          <p class="productContent"><? echo $data2['nameProduct'];?> </p>
-          <a href="sign_in.html"><input type="button" name="button" value="Buy" class="buyButton"></a>
-        </article>
-          <article class="productInfo"><!-- Each individual product description -->
-			<?
+				$class->showProduct();
+		
 				$data2 = mysqli_fetch_array($qry); 
+				$class->set($data2);
 				if(empty($data2)) break;
+				$class->showProduct();
 			?>
-          <div><img alt="sample" src="eCommerceAssets/images/<?echo $data2['img_product'];?>"></div>
-          <p class="price"><? echo $data2['price'];?> Baht</p>
-          <p class="productContent"><? echo $data2['nameProduct'];?> </p>
-          <a href="sign_in.html"><input type="button" name="button" value="Buy" class="buyButton"></a>
-        </article>
-      </div>
-     <?}?>
+       
+      	</div>
+     	<?php } ?>
     </section>
   </div>
   <footer> 
-    <!-- This is the footer with default 3 divs -->
-    
-      <p>
-		  <font face="'Montserrat', sans-serif" color= #ea576b size = 3 ><b><u>Exclusive Deals and Offers!</u></b>Subscribe and be the first to get great deals!</font> 
+   		<?php 
+	  		$classSub = new Subscribe;
+	  		$classSub->showSubscribe();
+	  	?>
+		<br>
+  </footer>
+</div>
+</body>
+</html>
+
+<!---  OO   -->
+<?php
+	class Product {
+		private $img;
+		private $price;
+		private $name;
+	
+		public function set($data){
+			$this->img = $data['img_product'];
+			$this->price = $data['price'];
+			$this->name = $data['nameProduct'];
+			
+		}
+		
+		public function getImg(){
+			return $this->img;
+		}
+		
+		public function getPrice(){
+			return $this->price;
+		}
+		
+		public function getName(){
+			return $this->name;
+		}
+		
+		public function showProduct(){
+			?> 
+ 				<article class="productInfo">
+		    		 <div><img alt="sample" src="eCommerceAssets/images/<?php echo $this->img; ?>"></div> 
+          			 <p class="price"><?php echo $this->price;?> Baht</p> 
+          			 <p class="productContent"><?php echo $this->name;?> </p> 
+					 <a href="sign_in.html"><input type="button" name="button" value="Buy" class="buyButton"></a>	
+				</article>
+			<?php
+			
+		}
+	
+	}
+
+	class Category {
+		
+		public function showCategory($conn){
+			$sql3 = "SELECT * FROM Brand;";
+			$qry2 = mysqli_query($conn,$sql3);
+	  	
+			while($data3 = mysqli_fetch_array($qry2)){
+			  ?>
+            	<li><a href="sign_in.html" title="Link"><?php echo $data3['name_Brand'] ?></a></li>
+            
+			<?php } 
+		}
+		
+	}
+
+	class Search {
+		
+		public function showSearch(){
+			?>
+				<form>
+     				<input type="text"  id="search" name="search" placeholder="Search Name Product">
+						<button >
+							<font face="'Montserrat', sans-serif" color= #919191 size = 3 > Search </font>
+						</button>
+				</form>
+
+			<?php
+		}
+	}
+
+	class Subscribe {
+		
+		public function showSubscribe(){
+			 ?> <p>
+		  <font face="'Montserrat', sans-serif" color= #ea576b size = 3 ><b><u>Exclusive Deals and Offers!</u></b> Subscribe and be the first to get great deals!</font> 
 		
 	  </p>
       <form method="post" action="subscribe.php">
         <input type="text"  id="search2" name="email" placeholder="E-mail">
         <button > <font face="'Montserrat', sans-serif" color= #919191 size = 1 > Sign Me up </font> </button>
 		  
-      </form>
-    
-    
-		<br>
-  </footer>
-</div>
-</body>
-</html>
+      </form> <?php
+		}
+	}
+
+?>
+
+
+
+
+
+

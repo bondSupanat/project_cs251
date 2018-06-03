@@ -10,7 +10,7 @@ if (!empty($password)){
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -48,13 +48,12 @@ else{
 		}else if($result2 == 0){
 		  	echo "<script type = 'text/javascript'>window.open(\"sign_up.html\",\"_self\")</script>";
 	  	}else{
-			//$a = "up";
+			
 		  	$sql = "INSERT INTO Member (fullName , email , address ,username, password)
   			values ('$fullName','$email','$adress','$username','$password')";
-		  	//echo "<script type = 'text/javascript'>window.open(\"sign_in.html\",\"_self\")</script>";;
-			//$a = "in";
+		  	
 		    if ($conn->query($sql)){
-	  			//echo "window.open(\"login.html\",\"_self\");";
+	  			
 	  			echo "<script type = 'text/javascript'>window.open(\"sign_in.html\",\"_self\")</script>";
 			}else{
     			echo "Error: ". $sql ."
@@ -62,7 +61,7 @@ else{
   			}
   			$conn->close();
 	  }
-		//echo "<script type = 'text/javascript'>window.open(\"sign_in.html\",\"_self\")</script>";
+		
 	
 
 

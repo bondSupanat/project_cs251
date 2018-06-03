@@ -10,7 +10,7 @@
 	$host = "localhost";
 	$dbusername = "root";
 	$dbpassword = "";
-	$dbname = "project_oo";
+	$dbname = "cs251_project";
 
 	// Create connection
 	$conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -20,7 +20,7 @@
 	}
 	
 	
-	$strSQL = "DELETE FROM Like_Product WHERE ID_product = '".$_GET['CusID']."' ";
+	$strSQL = "DELETE FROM favorite WHERE ID_product = '".$_GET['CusID']."' ";
 	$conn->query($strSQL);
 	$objQuery = mysql_query($strSQL);
 	

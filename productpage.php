@@ -4,7 +4,7 @@
 $host = "localhost";
 $dbusername = "root";
 $dbpassword = "";
-$dbname = "project_oo";
+$dbname = "cs251_project";
 
 // Create connection
 $conn = new mysqli ($host, $dbusername, $dbpassword, $dbname);
@@ -22,6 +22,20 @@ if (mysqli_connect_error()){
 
 	$data3 = mysqli_fetch_array($qry);
 	//echo $data3['nameProduct'];
+
+$sql4 = "SELECT  * FROM NowUser";
+	$qry4 = mysqli_query($conn,$sql4);
+	$data4 = mysqli_fetch_array($qry4);
+	
+	$user = $data4['UserName'];
+
+	$sql2 = "SELECT  * FROM Member WHERE username = '".$user."'";
+	$qry2 = mysqli_query($conn,$sql2);
+	$id2 = 0;
+	
+	$data2 = mysqli_fetch_array($qry2);
+	$point = $data2['point'];
+
 ?>
 <html>
 <head>
@@ -39,7 +53,13 @@ if (mysqli_connect_error()){
     <!-- This is the header content. It contains Logo and links -->
     <a href = "shopping.php"><div id="logo"> <!-- <img src="logoImage.png" alt="sample logo"> --> 
       <!-- Company Logo text --> HelloWorld</div></a>
-    <div id="headerLinks"><a href="index.php" title="Login/Register">Log Out</a><a href="favorite.php" title="Favorites">Favorites</a><a href="cart.php" title="Cart">Cart</a></div>
+       <div id="headerLinks">
+		<a href="index.php" title="Login/Register">Log Out</a>
+		<a href="history.php" title="History">History</a>
+		<a href="favorite.php" title="Favorites">Favorites</a>
+		<a href="cart.php" title="Cart">Cart</a>
+	  <font size="2"><?php  echo "&nbsp&nbsp&nbsp&nbsp&nbsp".$user.",  &nbsp Point : ".$point ?></font>
+	</div>
   </header>
  
   <section id="offer"> 
@@ -64,8 +84,8 @@ if (mysqli_connect_error()){
           <h2><!-- Title for menuset 1 --> Category</h2>
           <hr>
           <ul>
-             <?
-			  $sql1 = "SELECT * FROM Category;";
+             <?php
+			  $sql1 = "SELECT * FROM Brand;";
 	
 		$qry1 = mysqli_query($conn,$sql1);
 	  	//$data2 = mysqli_fetch_array($qry);
@@ -73,9 +93,9 @@ if (mysqli_connect_error()){
 		while($data1 = mysqli_fetch_array($qry1)){
 			  ?>
             <!-- List of links under menuset 1 -->
-            <li><a href="category.php?nameC=<? echo $data1['id_Category']; ?> "><? echo $data1['name_Category'] ?></a></li>
+            <li><a href="category.php?nameC=<? echo $data1['id_Brand']; ?> "><? echo $data1['name_Brand'] ?></a></li>
             
-			  <? } ?>
+			  <?php } ?>
           </ul>
         </nav>
        
@@ -85,11 +105,11 @@ if (mysqli_connect_error()){
 	  <section class="mainContent">
 	    <div class="productRow">
 		   
-          <p><img src="eCommerceAssets/images/<? echo $data3['img_product'] ?>" width="400" height="396" alt=""/> 
+          <p><img src="eCommerceAssets/images/<?php echo $data3['img_product'] ?>" width="400" height="396" alt=""/> 
             <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 10 ><? echo $data3['nameProduct']?></font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >ID : <? echo $data3['id_Product']?></font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Category : <? echo $data3['type'];
+            <font face="'Montserrat', sans-serif" color= #919191 size = 10 ><?php echo $data3['nameProduct']?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >ID : <?php echo $data3['id_Product']?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Category : <?php echo $data3['type'];
 				
 				$type = $data3['type'];
 				  	$sql4 = "SELECT * FROM Category where id_Category = '$type';";
@@ -101,25 +121,25 @@ if (mysqli_connect_error()){
 				
 				
 				?></font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Count : <? echo $data3['countProduct'];?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Qty : <?php echo $data3['countProduct'];?></font> <br>
             <font face="'Montserrat', sans-serif" color= #919191 size = 2 >Description : </font> <br>
-            <font face="'Montserrat', sans-serif" color= #919191 size = 2 ><? echo $data3['description']?></font> <br>
+            <font face="'Montserrat', sans-serif" color= #919191 size = 2 ><?php echo $data3['description']?></font> <br>
             <br>
-          <font face="'Montserrat', sans-serif" color= #919191 size = 4 >Price : <? echo $data3['price']?></font> </p>
+          <font face="'Montserrat', sans-serif" color= #919191 size = 4 >Price : <?php echo $data3['price']?></font> </p>
           <p>&nbsp;</p>
           <p><br>
             
             <article class="productInfo2">
-              <a href="cart.php?id=<? echo $data3['id_Product']?>"><input type="button" name="button" value="Add to Cart" class="CartButton"></a>
+              <a href="cart.php?id=<?php echo $data3['id_Product']?>"><input type="button" name="button" value="Add to Cart" class="CartButton"></a>
 				
-				<a href="favorite.php?id=<? echo $data3['id_Product']?>"><input type="button" name="button" value="Favorite" class="favoButton"></a>
+				<a href="favorite.php?id=<?php echo $data3['id_Product']?>"><input type="button" name="button" value="Favorite" class="favoButton"></a>
 				
 					<br>
 				
              
             </article>
 			
-			<?
+			<?php
 			$sql2 = "SELECT * FROM Product;";
 	
 		$qry = mysqli_query($conn,$sql2);
@@ -132,12 +152,12 @@ if (mysqli_connect_error()){
 			$data2 = mysqli_fetch_array($qry)
 			?>
 			<article class="productInfo"><!-- Each individual product description -->
-          <div><img alt="sample" src="eCommerceAssets/images/<?echo $data2['img_product'];?>"></div>
-          <p class="price"><? echo $data2['price'];?> Baht</p>
-          <p class="productContent"><? echo $data2['nameProduct'];?> </p>
-          <a href="productpage.php?proId=<? echo $data2['id_Product'];?>"><input type="button" name="button" value="Buy" class="buyButton"></a>
+          <div><img alt="sample" src="eCommerceAssets/images/<?php echo $data2['img_product'];?>"></div>
+          <p class="price"><?php echo $data2['price'];?> Baht</p>
+          <p class="productContent"><?php echo $data2['nameProduct'];?> </p>
+          <a href="productpage.php?proId=<?php echo $data2['id_Product'];?>"><input type="button" name="button" value="Buy" class="buyButton"></a>
         </article>
-			<? } ?>
+			<?php } ?>
 			
 		
 			
